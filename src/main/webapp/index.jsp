@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Prueba GitHub con NetBeans</h1>
+        <p>Prueba para ver si funciona subir archivos a github desde netbeans</p>
     </body>
 </html>
