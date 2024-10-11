@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>CRUD RESTAURANTE</title>
     </head>
     <body>
         <h1>Probando CRUD Carta</h1>
@@ -41,5 +41,7 @@
             <input type='submit' value="Modificar" /> 
         </form>
         
+        <h1><a href='MesaCarga.jsp'>MESAS</a></h1>
+        <h1><a href='ReservaCarga.jsp'>RESERVAS</a></h1>
     </body>
 </html>

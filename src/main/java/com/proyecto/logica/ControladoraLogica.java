@@ -7,6 +7,7 @@ package com.proyecto.logica;
 import com.proyecto.persistencia.ControladoraPersistencia;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -61,7 +62,7 @@ public class ControladoraLogica {
         return ctrl.listaPedidos();
 
   
-  //Usuario
+    //Usuario
     
     public void crearUsuario(usuario user) {
         ctrl.crearUsuario(user);
@@ -84,6 +85,56 @@ public class ControladoraLogica {
     
     public ArrayList<usuario> listarUsuarios(){
         return ctrl.listarUsuarios();
+    }
+    
+    //-----------------MESAS------------------
+    public void crearMesa(Mesa mesita){
+        ctrl.crearMesa(mesita);
+    }
+    
+    public Mesa buscarMesa(int numMesa){
+        return ctrl.buscarMesa(numMesa);
+    }
+    
+    public void modificarMesa(Mesa mesita){
+        ctrl.modificarMesa(mesita);
+    }
+    
+    public void borrarMesa(int numMesa){
+        ctrl.borrarMesa(numMesa);
+    }
+    
+    public ArrayList<Mesa> listarMesas(){
+        return ctrl.listarMesas();
+    }
+    
+    public List<Mesa> traerMesas(){
+        return ctrl.traerMesas();
+    }
+    
+    //----------------RESERVAS----------------
+    public void crearReserva(Reserva reser){
+        ctrl.crearReserva(reser);
+    }
+    
+    public Reserva buscarReserva(int idReserva){
+        return ctrl.buscarReserva(idReserva);
+    }
+    
+    public void modificarReserva(Reserva reser){
+        ctrl.modificarReserva(reser);
+    }
+    
+    public void borrarReserva(int idReserva){
+        ctrl.borrarReserva(idReserva);
+    }
+    
+    public ArrayList<Reserva> listarReservas(){
+        return ctrl.listarReservas();
+    }
+    
+    public List<Reserva> traerReservas(){
+        return ctrl.traerReservas();
     }
 }
 
