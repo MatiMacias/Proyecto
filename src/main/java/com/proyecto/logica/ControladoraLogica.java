@@ -5,6 +5,7 @@
 package com.proyecto.logica;
 
 import com.proyecto.persistencia.ControladoraPersistencia;
+import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 
 /**
@@ -37,4 +38,28 @@ public class ControladoraLogica {
         return ctrl.listarCarta();
     }
     
+    
+    public void crearUsuario(usuario user) {
+        ctrl.crearUsuario(user);
+    }
+
+    
+    public void eliminarUsuario(int idUser) throws NonexistentEntityException {
+        ctrl.borrarUsuario(idUser);
+    }
+
+    
+    public usuario buscarUsuario(int idUser) {
+        return ctrl.buscarUsuario(idUser);
+    }
+
+    
+    public void modificarUsuario(usuario user) throws NonexistentEntityException{
+        ctrl.modificarUsuario(user);
+    }
+    
+    public ArrayList<usuario> listarUsuarios(){
+        return ctrl.listarUsuarios();
+    }
 }
+
