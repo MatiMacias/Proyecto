@@ -16,7 +16,7 @@ public class ControladoraLogica {
     
     ControladoraPersistencia ctrl = new ControladoraPersistencia();
     
-    //Carta
+    //----- Carta -----
     
     public void crearCarta(Carta carta){
         ctrl.crearCarta(carta);
@@ -38,6 +38,30 @@ public class ControladoraLogica {
         return ctrl.listarCarta();
     }
     
+
+    //----- Pedido -----
+    
+    public void crearPedido(Pedido encomienda){
+        ctrl.crearPedido(encomienda);
+    }
+    
+    public Pedido buscarPedido(int idPedido){
+        return ctrl.buscarPedido(idPedido);
+    }
+    
+    public void modificarPedido(Pedido encomienda){
+        ctrl.modificarPedido(encomienda);
+    }
+    
+    public void eliminarPedido(int idPedido){
+        ctrl.eliminarPedido(idPedido);
+    }
+    
+    public ArrayList<Pedido> listaPedidos(){
+        return ctrl.listaPedidos();
+
+  
+  //Usuario
     
     public void crearUsuario(usuario user) {
         ctrl.crearUsuario(user);
