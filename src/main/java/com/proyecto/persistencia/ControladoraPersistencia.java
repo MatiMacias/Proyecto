@@ -2,7 +2,9 @@ package com.proyecto.persistencia;
 
 import com.proyecto.logica.usuario;
 import com.proyecto.logica.Carta;
+import com.proyecto.logica.Mesa;
 import com.proyecto.logica.Pedido;
+import com.proyecto.logica.Reserva;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,4 +123,84 @@ public class ControladoraPersistencia {
         ArrayList<usuario> lista = new ArrayList<>(listau);
         return lista;
     }
+    
+    //-------------------MESAS--------------------------
+    MesaJpaController mesaJpa = new MesaJpaController();
+    
+    public void crearMesa(Mesa mesita) {
+         try {
+             mesaJpa.create(mesita);
+         } catch (Exception ex) {
+             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+
+    public Mesa buscarMesa(int numMesa) {
+        return mesaJpa.findMesa(numMesa);
+    }
+
+    public void modificarMesa(Mesa mesita) {
+         try {
+             mesaJpa.edit(mesita);
+         } catch (Exception ex) {
+             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+
+    public void borrarMesa(int numMesa) {
+         try {
+             mesaJpa.destroy(numMesa);
+         } catch (NonexistentEntityException ex) {
+             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+
+    public ArrayList<Mesa> listarMesas() {
+        List<Mesa> listMesa = mesaJpa.findMesaEntities();
+        ArrayList<Mesa> arrayMesa = new ArrayList<>(listMesa);
+        return arrayMesa;
+    }
+
+    public List<Mesa> traerMesas() {
+        return mesaJpa.findMesaEntities();
+    }
+    
+    //------------------RESERVAS--------------------------
+    
+    ReservaJpaController resJpa = new ReservaJpaController();
+
+    public void crearReserva(Reserva reser) {
+        resJpa.create(reser);
+    }
+
+    public Reserva buscarReserva(int idReserva) {
+        return resJpa.findReserva(idReserva);
+    }
+
+    public void modificarReserva(Reserva reser) {
+         try {
+             resJpa.edit(reser);
+         } catch (Exception ex) {
+             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+
+    public void borrarReserva(int idReserva) {
+         try {
+             resJpa.destroy(idReserva);
+         } catch (NonexistentEntityException ex) {
+             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+
+    public ArrayList<Reserva> listarReservas() {
+        List<Reserva> listReserva = resJpa.findReservaEntities();
+        ArrayList<Reserva> arrayReserva = new ArrayList<>(listReserva);
+        return arrayReserva;
+    }
+
+    public List<Reserva> traerReservas() {
+        return resJpa.findReservaEntities();
+    }
+    
 }
