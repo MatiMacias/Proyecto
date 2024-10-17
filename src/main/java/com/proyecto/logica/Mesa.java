@@ -9,6 +9,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -22,16 +23,23 @@ public class Mesa implements Serializable {
     private String estado;
     @ManyToOne
     private Reserva reserva;
-
+    
+    @OneToOne
+    private Pedido pedido;
+    
+    
     
     public Mesa() {
     }
 
-    public Mesa(int numMesa, String estado, Reserva reserva) {
+    public Mesa(int numMesa, String estado, Reserva reserva, Pedido pedido) {
         this.numMesa = numMesa;
         this.estado = estado;
         this.reserva = reserva;
+        this.pedido = pedido;
     }
+
+    
     
     public int getNumMesa() {
         return numMesa;
@@ -57,8 +65,20 @@ public class Mesa implements Serializable {
         this.reserva = reserva;
     }
 
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
     @Override
     public String toString() {
-        return "Mesa{" + "numMesa=" + numMesa + ", estado=" + estado + ", reserva=" + reserva + '}';
+        return "Mesa{" + "numMesa=" + numMesa + ", estado=" + estado + ", reserva=" + reserva + ", pedido=" + pedido + '}';
     }
+    
+    
+
+    
 }

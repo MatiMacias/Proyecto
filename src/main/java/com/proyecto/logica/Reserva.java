@@ -32,23 +32,27 @@ public class Reserva implements Serializable {
     private Calendar fecha;
     @Temporal(TemporalType.TIME)
     private Date hora;
-    /*@ManyToOne
-    private Usuario usuario;
+    
+    @ManyToOne
+    private usuario usuario;
+    
     @OneToMany (mappedBy="reserva")
-    private ArrayList<Mesa> mesas;*/
-    private int mesas;
+    private ArrayList<Mesa> mesas;
+    
 
     
     public Reserva() {
     }
 
-    public Reserva(int idReserva, Calendar fecha, Date hora, /*Usuario usuario, ArrayList<Mesa> mesas*/ int mesas) {
+    public Reserva(int idReserva, Calendar fecha, Date hora, usuario usuario, ArrayList<Mesa> mesas) {
         this.idReserva = idReserva;
         this.fecha = fecha;
         this.hora = hora;
-        //this.usuario = usuario;
+        this.usuario = usuario;
         this.mesas = mesas;
     }
+
+    
 
     public int getIdReserva() {
         return idReserva;
@@ -74,19 +78,11 @@ public class Reserva implements Serializable {
         this.hora = hora;
     }
 
-    public int getMesas() {
-        return mesas;
-    }
-
-    public void setMesas(int mesas) {
-        this.mesas = mesas;
-    }
-    
-    /*public Usuario getUsuario() {
+    public usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(usuario usuario) {
         this.usuario = usuario;
     }
 
@@ -96,10 +92,10 @@ public class Reserva implements Serializable {
 
     public void setMesas(ArrayList<Mesa> mesas) {
         this.mesas = mesas;
-    }*/
+    }
 
     @Override
     public String toString() {
-        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + /*", usuario=" + usuario + */", mesas=" + mesas + '}';
+        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + ", usuario=" + usuario + ", mesas=" + mesas + '}';
     }    
 }

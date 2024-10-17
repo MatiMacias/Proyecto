@@ -1,10 +1,11 @@
 package com.proyecto.logica;
 
 import java.io.Serializable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 
 @Entity
@@ -19,15 +20,28 @@ public class Carta implements Serializable {
     private String nombreProducto;
  
     private Double precioProducto;
+    
+    @ManyToOne
+    private Pedido pedido;
+    
+    @ManyToOne
+    private usuario usuario;
+
 
     public Carta(){}
 
-    public Carta(int idProducto, String Categoria, String nombreProducto, Double precioProducto) {
+    public Carta(int idProducto, String Categoria, String nombreProducto, Double precioProducto, Pedido pedido, usuario usuario) {
         this.idProducto = idProducto;
         this.Categoria = Categoria;
         this.nombreProducto = nombreProducto;
         this.precioProducto = precioProducto;
+        this.pedido = pedido;
+        this.usuario = usuario;
     }
+
+    
+
+    
      
     
     public int getIdProducto() {
@@ -64,10 +78,31 @@ public class Carta implements Serializable {
         this.precioProducto = precioProducto;
     }
 
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String toString() {
-        return "Carta{" + "idProducto=" + idProducto + ", nombreProducto=" + nombreProducto + ", precioProducto=" + precioProducto + '}';
+        return "Carta{" + "idProducto=" + idProducto + ", Categoria=" + Categoria + ", nombreProducto=" + nombreProducto + ", precioProducto=" + precioProducto + ", pedido=" + pedido + ", usuario=" + usuario + '}';
     }
     
+    
+
+    
+    
+
     
 }

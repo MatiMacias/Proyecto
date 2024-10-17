@@ -3,7 +3,10 @@
   <persistence-unit name="proyectoPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.proyecto.logica.Carta</class>
+    <class>com.proyecto.logica.Mesa</class>
     <class>com.proyecto.logica.Pedido</class>
+    <class>com.proyecto.logica.Reserva</class>
+    <class>com.proyecto.logica.usuario</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proyecto?Timezone=UTC"/>

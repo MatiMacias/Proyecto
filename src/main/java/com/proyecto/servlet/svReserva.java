@@ -70,7 +70,7 @@ public class svReserva extends HttpServlet {
         Reserva res = new Reserva();
         res.setFecha(cal);
         res.setHora(Date.from(Instant.parse(hora)));
-        res.setMesas(Integer.parseInt(mesas));
+        //res.setMesas(Integer.parseInt(mesas));
         
         logica.crearReserva(res);
         response.sendRedirect("ReservaCarga.jsp");

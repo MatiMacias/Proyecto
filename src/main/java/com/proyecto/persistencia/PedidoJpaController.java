@@ -1,25 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.proyecto.persistencia;
 
+import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import com.proyecto.logica.Carta;
 import com.proyecto.logica.Pedido;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Brython
+ * @author Matias
  */
 public class PedidoJpaController implements Serializable {
     
@@ -37,11 +38,29 @@ public class PedidoJpaController implements Serializable {
     }
 
     public void create(Pedido pedido) {
+        if (pedido.getListaProductos() == null) {
+            pedido.setListaProductos(new ArrayList<Carta>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            ArrayList<Carta> attachedListaProductos = new ArrayList<Carta>();
+            for (Carta listaProductosCartaToAttach : pedido.getListaProductos()) {
+                listaProductosCartaToAttach = em.getReference(listaProductosCartaToAttach.getClass(), listaProductosCartaToAttach.getIdProducto());
+                attachedListaProductos.add(listaProductosCartaToAttach);
+            }
+            pedido.setListaProductos(attachedListaProductos);
             em.persist(pedido);
+            for (Carta listaProductosCarta : pedido.getListaProductos()) {
+                Pedido oldPedidoOfListaProductosCarta = listaProductosCarta.getPedido();
+                listaProductosCarta.setPedido(pedido);
+                listaProductosCarta = em.merge(listaProductosCarta);
+                if (oldPedidoOfListaProductosCarta != null) {
+                    oldPedidoOfListaProductosCarta.getListaProductos().remove(listaProductosCarta);
+                    oldPedidoOfListaProductosCarta = em.merge(oldPedidoOfListaProductosCarta);
+                }
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -55,7 +74,34 @@ public class PedidoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Pedido persistentPedido = em.find(Pedido.class, pedido.getIdPedido());
+            ArrayList<Carta> listaProductosOld = persistentPedido.getListaProductos();
+            ArrayList<Carta> listaProductosNew = pedido.getListaProductos();
+            ArrayList<Carta> attachedListaProductosNew = new ArrayList<Carta>();
+            for (Carta listaProductosNewCartaToAttach : listaProductosNew) {
+                listaProductosNewCartaToAttach = em.getReference(listaProductosNewCartaToAttach.getClass(), listaProductosNewCartaToAttach.getIdProducto());
+                attachedListaProductosNew.add(listaProductosNewCartaToAttach);
+            }
+            listaProductosNew = attachedListaProductosNew;
+            pedido.setListaProductos(listaProductosNew);
             pedido = em.merge(pedido);
+            for (Carta listaProductosOldCarta : listaProductosOld) {
+                if (!listaProductosNew.contains(listaProductosOldCarta)) {
+                    listaProductosOldCarta.setPedido(null);
+                    listaProductosOldCarta = em.merge(listaProductosOldCarta);
+                }
+            }
+            for (Carta listaProductosNewCarta : listaProductosNew) {
+                if (!listaProductosOld.contains(listaProductosNewCarta)) {
+                    Pedido oldPedidoOfListaProductosNewCarta = listaProductosNewCarta.getPedido();
+                    listaProductosNewCarta.setPedido(pedido);
+                    listaProductosNewCarta = em.merge(listaProductosNewCarta);
+                    if (oldPedidoOfListaProductosNewCarta != null && !oldPedidoOfListaProductosNewCarta.equals(pedido)) {
+                        oldPedidoOfListaProductosNewCarta.getListaProductos().remove(listaProductosNewCarta);
+                        oldPedidoOfListaProductosNewCarta = em.merge(oldPedidoOfListaProductosNewCarta);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -84,6 +130,11 @@ public class PedidoJpaController implements Serializable {
                 pedido.getIdPedido();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The pedido with id " + id + " no longer exists.", enfe);
+            }
+            ArrayList<Carta> listaProductos = pedido.getListaProductos();
+            for (Carta listaProductosCarta : listaProductos) {
+                listaProductosCarta.setPedido(null);
+                listaProductosCarta = em.merge(listaProductosCarta);
             }
             em.remove(pedido);
             em.getTransaction().commit();

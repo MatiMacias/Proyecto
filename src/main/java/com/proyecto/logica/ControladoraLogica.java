@@ -60,6 +60,7 @@ public class ControladoraLogica {
     
     public ArrayList<Pedido> listaPedidos(){
         return ctrl.listaPedidos();
+    }
 
   
     //Usuario
@@ -67,6 +68,7 @@ public class ControladoraLogica {
     public void crearUsuario(usuario user) {
         ctrl.crearUsuario(user);
     }
+    
 
     
     public void eliminarUsuario(int idUser) throws NonexistentEntityException {

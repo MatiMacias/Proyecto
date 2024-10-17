@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.ArrayList;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -26,17 +28,27 @@ public class usuario implements Serializable {
     private String correo;
     private String contrasena;
     private String tipo;
+    
+    @OneToMany (mappedBy = "usuariosRes")
+    private ArrayList<Reserva> reservas;
+    
+    @OneToMany (mappedBy = "usuariosProd")
+    private ArrayList<Carta> carta;
 
     public usuario() {
     }
 
-    public usuario(int id, String nombre, String correo, String contrasena, String tipo) {
+    public usuario(int id, String nombre, String correo, String contrasena, String tipo, ArrayList<Reserva> reservas, ArrayList<Carta> carta) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasena = contrasena;
         this.tipo = tipo;
+        this.reservas = reservas;
+        this.carta = carta;
     }
+
+    
 
     public int getId() {
         return id;
@@ -77,6 +89,29 @@ public class usuario implements Serializable {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    public ArrayList<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(ArrayList<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+
+    public ArrayList<Carta> getCarta() {
+        return carta;
+    }
+
+    public void setCarta(ArrayList<Carta> carta) {
+        this.carta = carta;
+    }
+
+    @Override
+    public String toString() {
+        return "usuario{" + "id=" + id + ", nombre=" + nombre + ", correo=" + correo + ", contrasena=" + contrasena + ", tipo=" + tipo + ", reservas=" + reservas + ", carta=" + carta + '}';
+    }
+    
+    
 
     
 }
