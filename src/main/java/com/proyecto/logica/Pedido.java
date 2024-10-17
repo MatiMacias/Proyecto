@@ -7,18 +7,21 @@ package com.proyecto.logica;
 
 import java.io.Serializable;
 import java.util.Date;
-import jakarta.persistence.Entity;
+import java.util.ArrayList;
+/*import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-/*import javax.persistence.Entity;
+import java.util.ArrayList;*/
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;*/
+import javax.persistence.TemporalType;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -32,15 +35,23 @@ public class Pedido implements Serializable{
     private double totalPedido;
     @Temporal(TemporalType.TIME)
     private Date horaPedido;
+    
+    @OneToMany (mappedBy="Pedido")
+    private ArrayList<Carta> listaProductos;
+    
+    
 
     public Pedido() {
     }
 
-    public Pedido(int idPedido, Date horaPedido, double totalPedido) {
+    public Pedido(int idPedido, double totalPedido, Date horaPedido, ArrayList<Carta> listaProductos) {
         this.idPedido = idPedido;
-        this.horaPedido = horaPedido;
         this.totalPedido = totalPedido;
+        this.horaPedido = horaPedido;
+        this.listaProductos = listaProductos;
     }
+
+    
 
     public int getIdPedido() {
         return idPedido;
@@ -66,10 +77,21 @@ public class Pedido implements Serializable{
         this.totalPedido = totalPedido;
     }
 
+    public ArrayList<Carta> getListaProductos() {
+        return listaProductos;
+    }
+
+    public void setListaProductos(ArrayList<Carta> listaProductos) {
+        this.listaProductos = listaProductos;
+    }
+
     @Override
     public String toString() {
-        return "Pedido{" + "idPedido=" + idPedido + ", horaPedido=" + horaPedido + ", totalPedido=" + totalPedido + '}';
+        return "Pedido{" + "idPedido=" + idPedido + ", totalPedido=" + totalPedido + ", horaPedido=" + horaPedido + ", listaProductos=" + listaProductos + '}';
     }
+    
+    
+
     
     
 }

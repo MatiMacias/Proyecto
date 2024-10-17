@@ -5,16 +5,17 @@
 package com.proyecto.persistencia;
 
 import com.proyecto.logica.Carta;
-import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import com.proyecto.logica.Pedido;
+import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.util.List;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Query;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -22,7 +23,7 @@ import jakarta.persistence.criteria.Root;
  */
 public class CartaJpaController implements Serializable {
 
-    public CartaJpaController(){
+    public CartaJpaController() {
         emf = Persistence.createEntityManagerFactory("proyectoPU");
     }
     
@@ -40,7 +41,16 @@ public class CartaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Pedido pedido = carta.getPedido();
+            if (pedido != null) {
+                pedido = em.getReference(pedido.getClass(), pedido.getIdPedido());
+                carta.setPedido(pedido);
+            }
             em.persist(carta);
+            if (pedido != null) {
+                pedido.getListaProductos().add(carta);
+                pedido = em.merge(pedido);
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -54,7 +64,22 @@ public class CartaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Carta persistentCarta = em.find(Carta.class, carta.getIdProducto());
+            Pedido pedidoOld = persistentCarta.getPedido();
+            Pedido pedidoNew = carta.getPedido();
+            if (pedidoNew != null) {
+                pedidoNew = em.getReference(pedidoNew.getClass(), pedidoNew.getIdPedido());
+                carta.setPedido(pedidoNew);
+            }
             carta = em.merge(carta);
+            if (pedidoOld != null && !pedidoOld.equals(pedidoNew)) {
+                pedidoOld.getListaProductos().remove(carta);
+                pedidoOld = em.merge(pedidoOld);
+            }
+            if (pedidoNew != null && !pedidoNew.equals(pedidoOld)) {
+                pedidoNew.getListaProductos().add(carta);
+                pedidoNew = em.merge(pedidoNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -83,6 +108,11 @@ public class CartaJpaController implements Serializable {
                 carta.getIdProducto();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The carta with id " + id + " no longer exists.", enfe);
+            }
+            Pedido pedido = carta.getPedido();
+            if (pedido != null) {
+                pedido.getListaProductos().remove(carta);
+                pedido = em.merge(pedido);
             }
             em.remove(carta);
             em.getTransaction().commit();
