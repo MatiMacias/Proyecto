@@ -1,0 +1,81 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 17 oct. 2024, 22:21:29
+    Author     : Matias
+*/
+
+@import url(https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap);
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap');
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: white;
+    font-family: "Bree Serif", serif;
+}
+
+body{
+    color: white;
+    background-image: url(../img/FondoSesion.png);
+}
+
+#titulo{
+    color: white;
+    font-family: "Bree Serif", serif;
+}
+
+#logo {
+    color: #ffa446;
+    text-decoration: none;
+    font-family: "Bree Serif", serif;
+    font-size: 25px;
+}
+
+.regreso{
+    position: relative;
+    float: right;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.lista-container {
+    border: 2px solid white; /* Borde negro en cada lista */
+}
+
+.lista {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lista h2 {
+    margin: 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.lista li {
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.sesion{
+    font-size: 20px;
+    background-color: #ffa446;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-family: "Bree Serif", serif;
+}
