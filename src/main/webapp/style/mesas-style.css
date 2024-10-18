@@ -1,0 +1,59 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 17 oct. 2024, 22:22:01
+    Author     : Matias
+*/
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    color: white;
+}
+td {
+    border: 2px solid white;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: white;
+}
+
+body{
+    color: white;
+    background-image: url(../img/FondoSesion.png);
+}
+
+#logo {
+    color: #ffa446;
+    text-decoration: none;
+    font-family: "Bree Serif", serif;
+    font-size: 25px;
+}
+
+.regreso{
+    position: relative;
+    float: right;
+}
+
+.sesion{
+    font-size: 20px;
+    background-color: #ffa446;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-family: "Bree Serif", serif;
+}
+#formMesas{
+    color: white;
+    font-family: "Bree Serif", serif;
+}
+
+#tablaMesas{
+    color: white;
+    font-family: "Bree Serif", serif;
+}

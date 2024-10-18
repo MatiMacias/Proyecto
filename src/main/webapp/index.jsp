@@ -1,47 +1,32 @@
-<%-- 
-    Document   : index
-    Created on : 27 sep. 2024, 19:58:41
-    Author     : Matias
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>CRUD RESTAURANTE</title>
-    </head>
-    <body>
-        <h1>Probando CRUD Carta</h1>
-        
-        <form action='svCarta' method='POST'>
-            <p><label>nombre: </label><input type="text" name="nombre"></p>
-            <p><label>categoria: </label><input type="text" name="categoria"></p>
-            <p><label>precio: </label><input type="text" name="precio"></p>
-            <input type="submit" value="ENVIAR" />
-        </form>
-        
-        <h2>Datos de Carta</h2>
-        <p>Para visualizar aprete el boton</p>
-        <form action='svCarta' method='GET'>
-            <button type='submit'>MOSTRAR</button>
-        </form>
-        
-        <h1>Borrar Producuto</h1>
-        <p>Ingrese el ID del estudiante a borrar</p>
-        <form action='svEliminarCarta' method='POST'>    
-            <p><label>ID:  </label><input type="text" name="idCarta"></p>
-            <input type="submit" value="Borrar" />
-        </form>
-        
-        <h1>Modificar un Producto</h1>
-        <p> Ingrese el Id del estudiante que desea Modificar</p> 
-        <form action='svModificarCarta' method='GET' >
-            <p><label> ID:</label><input type="text" name="idCartaMod"> </p>
-            <input type='submit' value="Modificar" /> 
-        </form>
-        
-        <h1><a href='MesaCarga.jsp'>MESAS</a></h1>
-        <h1><a href='ReservaCarga.jsp'>RESERVAS</a></h1>
-    </body>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style/index-style.css">
+</head>
+<body>
+
+    <nav>
+        <div>
+          <a href="#" id="logo">Nombre X</a>
+          <div>
+            <div>
+              <a href="register.jsp"><button class="link">Registrarme</button></a>
+              <a href="login.jsp"><button class="link">Iniciar Sesión</button></a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+    <main>
+        <div class="informacion">
+          <P>Un sitio web hecho para administrar tu propio restaurante</P>
+          <button><a href="register.jsp">Empezar mi Restaurante</a></button>
+        </div>
+    </main>
+</body>
 </html>
