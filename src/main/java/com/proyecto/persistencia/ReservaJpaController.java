@@ -5,32 +5,34 @@
 package com.proyecto.persistencia;
 
 import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Query;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import com.proyecto.logica.usuario;
 import com.proyecto.logica.Mesa;
 import com.proyecto.logica.Reserva;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 /**
  *
  * @author Matias
  */
 public class ReservaJpaController implements Serializable {
-    
-    public ReservaJpaController(){
-        emf = Persistence.createEntityManagerFactory("proyectoPU");
-    }
 
     public ReservaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
+    public ReservaJpaController(){
+        emf=Persistence.createEntityManagerFactory("proyectoPU");
+    }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -45,6 +47,11 @@ public class ReservaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            usuario usuario = reserva.getUsuario();
+            if (usuario != null) {
+                usuario = em.getReference(usuario.getClass(), usuario.getId());
+                reserva.setUsuario(usuario);
+            }
             ArrayList<Mesa> attachedMesas = new ArrayList<Mesa>();
             for (Mesa mesasMesaToAttach : reserva.getMesas()) {
                 mesasMesaToAttach = em.getReference(mesasMesaToAttach.getClass(), mesasMesaToAttach.getNumMesa());
@@ -52,6 +59,10 @@ public class ReservaJpaController implements Serializable {
             }
             reserva.setMesas(attachedMesas);
             em.persist(reserva);
+            if (usuario != null) {
+                usuario.getReservas().add(reserva);
+                usuario = em.merge(usuario);
+            }
             for (Mesa mesasMesa : reserva.getMesas()) {
                 Reserva oldReservaOfMesasMesa = mesasMesa.getReserva();
                 mesasMesa.setReserva(reserva);
@@ -75,8 +86,14 @@ public class ReservaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Reserva persistentReserva = em.find(Reserva.class, reserva.getIdReserva());
+            usuario usuarioOld = persistentReserva.getUsuario();
+            usuario usuarioNew = reserva.getUsuario();
             ArrayList<Mesa> mesasOld = persistentReserva.getMesas();
             ArrayList<Mesa> mesasNew = reserva.getMesas();
+            if (usuarioNew != null) {
+                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getId());
+                reserva.setUsuario(usuarioNew);
+            }
             ArrayList<Mesa> attachedMesasNew = new ArrayList<Mesa>();
             for (Mesa mesasNewMesaToAttach : mesasNew) {
                 mesasNewMesaToAttach = em.getReference(mesasNewMesaToAttach.getClass(), mesasNewMesaToAttach.getNumMesa());
@@ -85,6 +102,14 @@ public class ReservaJpaController implements Serializable {
             mesasNew = attachedMesasNew;
             reserva.setMesas(mesasNew);
             reserva = em.merge(reserva);
+            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
+                usuarioOld.getReservas().remove(reserva);
+                usuarioOld = em.merge(usuarioOld);
+            }
+            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
+                usuarioNew.getReservas().add(reserva);
+                usuarioNew = em.merge(usuarioNew);
+            }
             for (Mesa mesasOldMesa : mesasOld) {
                 if (!mesasNew.contains(mesasOldMesa)) {
                     mesasOldMesa.setReserva(null);
@@ -130,6 +155,11 @@ public class ReservaJpaController implements Serializable {
                 reserva.getIdReserva();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The reserva with id " + id + " no longer exists.", enfe);
+            }
+            usuario usuario = reserva.getUsuario();
+            if (usuario != null) {
+                usuario.getReservas().remove(reserva);
+                usuario = em.merge(usuario);
             }
             ArrayList<Mesa> mesas = reserva.getMesas();
             for (Mesa mesasMesa : mesas) {

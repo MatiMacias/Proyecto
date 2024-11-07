@@ -30,14 +30,13 @@
            <version>6.1.0</version>
            <scope>provided</scope>
         </dependency>
-        
-        
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <type>jar</type>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.2.0</version>
         </dependency>
+        
+        
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.core</artifactId>
@@ -79,6 +78,8 @@
             <version>4.0.4</version>
             <scope>provided</scope>
         </dependency>
+
+        
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

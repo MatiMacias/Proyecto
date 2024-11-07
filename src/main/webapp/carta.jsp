@@ -23,7 +23,7 @@
         <h1>Altas de productos</h1>
       </div>
     <div class="container">
-        <form id="form">
+        <form id='form' >
             <label for="categoria">Nueva Categoría:</label>
             <input type="text" id="nuevaCategoria" name="nuevaCategoria">
             <button type="button" onclick="agregarCategoria()">Agregar Categoría</button>
@@ -31,14 +31,15 @@
 
             <label>Seleccionar Categoría:</label>
             <select id="categoriaSeleccionada" name="categoriaSeleccionada"></select>
-            <button type="button" onclick="eliminarCategoria()">Eliminar Categoría</button> <!-- Botón eliminar categoría -->
-            
-            <label for="nombre">Nombre:</label>
+            <button type="button" onclick="eliminarCategoria()">Eliminar Categoría</button> <!-- Botón eliminar categoría --> 
+        </form>
+        <form action='svCarta' method='POST'>
+              <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
             <label for="precio">Precio:</label>
             <input type="text" id="precio" name="precio">
-            <button type="button" onclick="agregarElemento()">Agregar Producto</button>
-        </form>
+            <button type="submit">Agregar Producto</button>  
+            </form>
 
         <div id="listas" class="grid-container">
             <!-- Las listas dinámicas se agregarán aquí -->

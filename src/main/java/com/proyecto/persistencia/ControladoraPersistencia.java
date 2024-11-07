@@ -17,8 +17,10 @@ import java.util.logging.Logger;
  */
 public class ControladoraPersistencia {
  
-     CartaJpaController car = new CartaJpaController();
+     
 
+    CartaJpaController car = new CartaJpaController();
+    
     // Controladora para la entidad Carta
 
 

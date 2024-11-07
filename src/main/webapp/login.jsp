@@ -18,13 +18,13 @@
 
     <section class="formulario col-md-2 col-lg-2">
         <div class="row">
-            <form>
+            <form clas="user" action="svLogin" method="POST" >
                 <label for="">Usuario</label> <br>
-                <input type="text"> <br>
+                <input type="text" name="user"> <br>
                 <label for="">Contraseña</label><br>
-                <input type="text"><br>
+                <input type="text" name="pass"><br>
                 <div class="col-md-12 col-lg-12">
-                    <button id="boton"><a href="dashboard.jsp" id="sesion">Iniciar Sesión</a></button>
+                <button id="boton">Iniciar Sesión</button>
                 </div>
             </form> 
          </div>

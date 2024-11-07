@@ -17,6 +17,24 @@ public class ControladoraLogica {
     
     ControladoraPersistencia ctrl = new ControladoraPersistencia();
     
+    //----- Login -----
+    
+    public boolean validarIngreso(String usuario, String contrasena){
+        boolean ingreso = false;
+        
+        List<usuario> listaUser = new ArrayList<usuario>();
+        listaUser = ctrl.listarUsuarios();
+        
+        for(usuario user : listaUser){
+            if(user.getNombre().equals(usuario)){
+                if(user.getContrasena().equals(contrasena)){
+                           ingreso = true;
+                }
+            }else{ingreso = false;}
+        }
+        return ingreso;
+    }
+    
     //----- Carta -----
     
     public void crearCarta(Carta carta){

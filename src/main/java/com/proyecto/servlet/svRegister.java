@@ -6,66 +6,65 @@ package com.proyecto.servlet;
 
 import com.proyecto.logica.Carta;
 import com.proyecto.logica.ControladoraLogica;
+import com.proyecto.logica.Reserva;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import com.proyecto.logica.usuario;
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- *
- * @author Matias
- */
-@WebServlet(name = "svCarta", urlPatterns = {"/svCarta"})
-public class svCarta extends HttpServlet {
+
+
+@WebServlet(name = "svRegister", urlPatterns = {"/svRegister"})
+public class svRegister extends HttpServlet {
     
     ControladoraLogica ctrl = new ControladoraLogica();
 
+ 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
     }
 
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-        List<Carta> listaCarta= new ArrayList<>();
-        
-        
-        listaCarta = ctrl.listarCarta();
-        
-        HttpSession misesion = request.getSession();
-        misesion.setAttribute("listaCarta", listaCarta);
-        response.sendRedirect("mostrarCarta.jsp");
-        
-        
-        
     }
 
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
         
-        String nombre = request.getParameter("nombre");
-        //String categoria = request.getParameter("categoria");
-        double precio = Double.parseDouble(request.getParameter("precio"));
+        String usuario = request.getParameter("usuario");
+        String contrasena = request.getParameter("contrasena");
+        String email = request.getParameter("email");
         
-        Carta car = new Carta();
+        ArrayList<Carta> productos = new ArrayList<Carta>();
+        ArrayList<Reserva> reservas =  new ArrayList<Reserva>();
         
-        car.setNombreProducto(nombre);
-        //car.setCategoria(categoria);
-        car.setPrecioProducto(precio);
+        usuario user = new usuario();
         
-        ctrl.crearCarta(car);
+        user.setNombre(usuario);
+        user.setContrasena(contrasena);
+        user.setCorreo(email);
+        user.setCarta(productos);
+        user.setReservas(reservas);
+        
+        
+        ctrl.crearUsuario(user);
+        response.sendRedirect("index.jsp");
         
     }
 
+    
     @Override
     public String getServletInfo() {
         return "Short description";
