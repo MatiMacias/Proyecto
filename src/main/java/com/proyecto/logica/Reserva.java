@@ -5,19 +5,17 @@
 package com.proyecto.logica;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -34,7 +32,7 @@ public class Reserva implements Serializable {
     private Date hora;
     
     @ManyToOne
-    private usuario usuario;
+    private usuario usuarioRes;
     
     @OneToMany (mappedBy="reserva")
     private ArrayList<Mesa> mesas;
@@ -48,7 +46,7 @@ public class Reserva implements Serializable {
         this.idReserva = idReserva;
         this.fecha = fecha;
         this.hora = hora;
-        this.usuario = usuario;
+        this.usuarioRes = usuario;
         this.mesas = mesas;
     }
 
@@ -79,11 +77,11 @@ public class Reserva implements Serializable {
     }
 
     public usuario getUsuario() {
-        return usuario;
+        return usuarioRes;
     }
 
-    public void setUsuario(usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(usuario usuarioRes) {
+        this.usuarioRes = usuarioRes;
     }
 
     public ArrayList<Mesa> getMesas() {
@@ -96,6 +94,6 @@ public class Reserva implements Serializable {
 
     @Override
     public String toString() {
-        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + ", usuario=" + usuario + ", mesas=" + mesas + '}';
+        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + ", usuario=" + usuarioRes + ", mesas=" + mesas + '}';
     }    
 }

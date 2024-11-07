@@ -6,16 +6,16 @@ package com.proyecto.persistencia;
 
 import com.proyecto.logica.Carta;
 import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Query;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import com.proyecto.logica.Pedido;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 /**
  *
@@ -23,13 +23,14 @@ import javax.persistence.Persistence;
  */
 public class CartaJpaController implements Serializable {
 
-    public CartaJpaController() {
-        emf = Persistence.createEntityManagerFactory("proyectoPU");
-    }
-    
     public CartaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
+    public CartaJpaController(){
+        emf=Persistence.createEntityManagerFactory("proyectoPU");
+    }
+            
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

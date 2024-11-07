@@ -5,32 +5,33 @@
 package com.proyecto.persistencia;
 
 import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Query;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import com.proyecto.logica.Carta;
 import com.proyecto.logica.Pedido;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 /**
  *
  * @author Matias
  */
 public class PedidoJpaController implements Serializable {
-    
-    public PedidoJpaController(){
-        emf = Persistence.createEntityManagerFactory("proyectoPU");
-    }
 
     public PedidoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
+    public PedidoJpaController(){
+        emf=Persistence.createEntityManagerFactory("proyectoPU");
+    }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

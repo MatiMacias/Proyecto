@@ -5,13 +5,15 @@
 package com.proyecto.logica;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -29,10 +31,10 @@ public class usuario implements Serializable {
     private String contrasena;
     private String tipo;
     
-    @OneToMany (mappedBy = "usuariosRes")
+    @OneToMany (mappedBy = "usuarioRes")
     private ArrayList<Reserva> reservas;
     
-    @OneToMany (mappedBy = "usuariosProd")
+    @OneToMany (mappedBy = "usuarioProd")
     private ArrayList<Carta> carta;
 
     public usuario() {
@@ -110,8 +112,6 @@ public class usuario implements Serializable {
     public String toString() {
         return "usuario{" + "id=" + id + ", nombre=" + nombre + ", correo=" + correo + ", contrasena=" + contrasena + ", tipo=" + tipo + ", reservas=" + reservas + ", carta=" + carta + '}';
     }
-    
-    
 
     
 }
