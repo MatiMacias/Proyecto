@@ -24,7 +24,7 @@
         <header>
             <h1>RESERVACIONES</h1>
         </header>
-        <form>
+        <form action="svReserva" method="POST">
             <div class="datos">
                 <input type="text" id="nom" name="nom" placeholder="Nombre">
             </div>
@@ -32,13 +32,13 @@
                 <input type="text" id="ape" name="ape" placeholder="Apellido">
             </div>
             <div class="datos">
-                <input type="tel" id="tel" name="tele" placeholder="Telefono: 3444570000">
+                <input type="text" id="tel" name="tel" placeholder="Telefono: 3444570000">
             </div>
             <div class="datos">
-                <input type="date" name="fecres" id="fecres">
+                <input type="date" name="fecRes" id="fecres">
             </div>
             <div class="datos">
-                <input type="time" name="horares" id="horares">
+                <input type="time" name="horaRes" id="horares">
             </div>
             <div class="datos">
                 <input type="number" id="comen" name="comen" placeholder="Comensales" min="1" max="6">
@@ -73,6 +73,9 @@
                 <label for="promo" id="prom">Enviarme promos<br> y anuncios</label>
             </div>
             <div class="datos">
-                <button>Reservar Mesa</button>
+                <button type="submit">Reservar Mesa</button>
             </div>
         </form>
+    </section>
+</body>
+</html>

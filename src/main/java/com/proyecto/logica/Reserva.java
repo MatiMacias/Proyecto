@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.util.List;
 
 /**
  *
@@ -30,27 +31,31 @@ public class Reserva implements Serializable {
     private Calendar fecha;
     @Temporal(TemporalType.TIME)
     private Date hora;
+    private String nombre;
+    private String apellido;
+    private String telefono;
     
     @ManyToOne
     private usuario usuarioRes;
     
     @OneToMany (mappedBy="reserva")
-    private ArrayList<Mesa> mesas;
+    private List<Mesa> mesas;
     
 
     
     public Reserva() {
     }
 
-    public Reserva(int idReserva, Calendar fecha, Date hora, usuario usuario, ArrayList<Mesa> mesas) {
+    public Reserva(int idReserva, Calendar fecha, Date hora, String nombre, String apellido, String telefono, usuario usuarioRes, List<Mesa> mesas) {
         this.idReserva = idReserva;
         this.fecha = fecha;
         this.hora = hora;
-        this.usuarioRes = usuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.usuarioRes = usuarioRes;
         this.mesas = mesas;
     }
-
-    
 
     public int getIdReserva() {
         return idReserva;
@@ -76,24 +81,50 @@ public class Reserva implements Serializable {
         this.hora = hora;
     }
 
-    public usuario getUsuario() {
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public usuario getUsuarioRes() {
         return usuarioRes;
     }
 
-    public void setUsuario(usuario usuarioRes) {
+    public void setUsuarioRes(usuario usuarioRes) {
         this.usuarioRes = usuarioRes;
     }
 
-    public ArrayList<Mesa> getMesas() {
+    public List<Mesa> getMesas() {
         return mesas;
     }
 
-    public void setMesas(ArrayList<Mesa> mesas) {
+    public void setMesas(List<Mesa> mesas) {
         this.mesas = mesas;
     }
 
     @Override
     public String toString() {
-        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + ", usuario=" + usuarioRes + ", mesas=" + mesas + '}';
-    }    
+        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", usuarioRes=" + usuarioRes + ", mesas=" + mesas + '}';
+    }
+
+  
 }
