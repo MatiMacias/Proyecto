@@ -53,15 +53,19 @@ public class svReserva extends HttpServlet {
         HttpSession misesion = request.getSession();
         misesion.setAttribute("listaReservas", listaReservas);
         
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("mostrarReserva.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fecha = request.getParameter("fecha");
-        String hora = request.getParameter("hora");
-        String mesas = request.getParameter("numMesa");
+        String nombre = request.getParameter("nom");
+        String apellido = request.getParameter("ape");
+        String telefono = request.getParameter("tel");
+        String fecha = request.getParameter("fecRes");
+        String hora = request.getParameter("horaRes");
+        int comensales = Integer.parseInt(request.getParameter("comen"));
+        String mesas = request.getParameter("mesa");
         
         Date fechadate = Date.from(Instant.parse(fecha));
         Calendar cal = Calendar.getInstance();
@@ -73,7 +77,7 @@ public class svReserva extends HttpServlet {
         //res.setMesas(Integer.parseInt(mesas));
         
         logica.crearReserva(res);
-        response.sendRedirect("ReservaCarga.jsp");
+        response.sendRedirect("reserva.jsp");
     }
 
     @Override
