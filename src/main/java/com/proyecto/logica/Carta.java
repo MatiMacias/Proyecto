@@ -28,8 +28,8 @@ public class Carta implements Serializable {
     @ManyToOne
     private usuario usuarioProd;
 
-
-    public Carta(){}
+    public Carta() {
+    }
 
     public Carta(int idProducto, String Categoria, String nombreProducto, Double precioProducto, Pedido pedido, usuario usuarioProd) {
         this.idProducto = idProducto;
@@ -40,11 +40,6 @@ public class Carta implements Serializable {
         this.usuarioProd = usuarioProd;
     }
 
-    
-
-    
-     
-    
     public int getIdProducto() {
         return idProducto;
     }
@@ -60,8 +55,6 @@ public class Carta implements Serializable {
     public void setCategoria(String Categoria) {
         this.Categoria = Categoria;
     }
-    
-    
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -87,11 +80,11 @@ public class Carta implements Serializable {
         this.pedido = pedido;
     }
 
-    public usuario getUsuario() {
+    public usuario getUsuarioProd() {
         return usuarioProd;
     }
 
-    public void setUsuario(usuario usuarioProd) {
+    public void setUsuarioProd(usuario usuarioProd) {
         this.usuarioProd = usuarioProd;
     }
 
@@ -99,11 +92,4 @@ public class Carta implements Serializable {
     public String toString() {
         return "Carta{" + "idProducto=" + idProducto + ", Categoria=" + Categoria + ", nombreProducto=" + nombreProducto + ", precioProducto=" + precioProducto + ", pedido=" + pedido + ", usuario=" + usuarioProd + '}';
     }
-    
-    
-
-    
-    
-
-    
 }

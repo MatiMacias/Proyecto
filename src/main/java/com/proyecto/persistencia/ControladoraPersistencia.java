@@ -19,40 +19,42 @@ public class ControladoraPersistencia {
  
      
 
-    CartaJpaController car = new CartaJpaController();
-    
-    // Controladora para la entidad Carta
+   CartaJpaController cartaJpaController = new CartaJpaController();
 
-
+    // Método para crear una nueva carta
     public void crearCarta(Carta carta) {
-        car.create(carta);
+        cartaJpaController.create(carta);
     }
 
-    public Carta buscarCarta(int id) {
-        return car.findCarta(id);
+    // Método para borrar una carta por su id
+    public void borrarCarta(int idCarta) {
+        try {
+            cartaJpaController.destroy(idCarta);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    // Método para buscar una carta por su id
+    public Carta buscarCarta(int idCarta) {
+        return cartaJpaController.findCarta(idCarta);
+    }
+
+    // Método para modificar una carta existente
     public void modificarCarta(Carta carta) {
-         try {
-             car.edit(carta);
-         } catch (Exception ex) {
-             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
-         }
+        try {
+            cartaJpaController.edit(carta);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void borrarCarta(int id) {
-         try {
-             car.destroy(id);
-         } catch (NonexistentEntityException ex) {
-             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
-         }
+    // Método para consultar todas las cartas
+    public ArrayList<Carta> consultarCarta() {
+        List<Carta> listaC = cartaJpaController.findCartaEntities();
+        return new ArrayList<>(listaC);
     }
 
-    public ArrayList<Carta> listarCarta() {
-        List<Carta> listac = car.findCartaEntities();
-        ArrayList<Carta> lista = new ArrayList<>(listac);
-        return lista;
-    }
 
     //----- Pedidos -----
   

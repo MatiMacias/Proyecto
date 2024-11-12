@@ -1,36 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.proyecto.persistencia;
 
-import com.proyecto.logica.Carta;
-import java.io.Serializable;
-import jakarta.persistence.Query;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import com.proyecto.logica.Pedido;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
-import java.util.List;
+import com.proyecto.logica.Carta;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import java.io.Serializable;
+import java.util.List;
 
-/**
- *
- * @author Matias
- */
 public class CartaJpaController implements Serializable {
+
+    public CartaJpaController() {
+        emf = Persistence.createEntityManagerFactory("pruebaServletPU");
+    }
 
     public CartaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    public CartaJpaController(){
-        emf=Persistence.createEntityManagerFactory("proyectoPU");
-    }
-            
+
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -42,16 +33,7 @@ public class CartaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Pedido pedido = carta.getPedido();
-            if (pedido != null) {
-                pedido = em.getReference(pedido.getClass(), pedido.getIdPedido());
-                carta.setPedido(pedido);
-            }
             em.persist(carta);
-            if (pedido != null) {
-                pedido.getListaProductos().add(carta);
-                pedido = em.merge(pedido);
-            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -65,29 +47,14 @@ public class CartaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Carta persistentCarta = em.find(Carta.class, carta.getIdProducto());
-            Pedido pedidoOld = persistentCarta.getPedido();
-            Pedido pedidoNew = carta.getPedido();
-            if (pedidoNew != null) {
-                pedidoNew = em.getReference(pedidoNew.getClass(), pedidoNew.getIdPedido());
-                carta.setPedido(pedidoNew);
-            }
             carta = em.merge(carta);
-            if (pedidoOld != null && !pedidoOld.equals(pedidoNew)) {
-                pedidoOld.getListaProductos().remove(carta);
-                pedidoOld = em.merge(pedidoOld);
-            }
-            if (pedidoNew != null && !pedidoNew.equals(pedidoOld)) {
-                pedidoNew.getListaProductos().add(carta);
-                pedidoNew = em.merge(pedidoNew);
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 int id = carta.getIdProducto();
                 if (findCarta(id) == null) {
-                    throw new NonexistentEntityException("The carta with id " + id + " no longer exists.");
+                    throw new NonexistentEntityException("La carta con id " + id + " no existe.");
                 }
             }
             throw ex;
@@ -108,12 +75,7 @@ public class CartaJpaController implements Serializable {
                 carta = em.getReference(Carta.class, id);
                 carta.getIdProducto();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The carta with id " + id + " no longer exists.", enfe);
-            }
-            Pedido pedido = carta.getPedido();
-            if (pedido != null) {
-                pedido.getListaProductos().remove(carta);
-                pedido = em.merge(pedido);
+                throw new NonexistentEntityException("La carta con id " + id + " no existe.", enfe);
             }
             em.remove(carta);
             em.getTransaction().commit();
@@ -169,5 +131,4 @@ public class CartaJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

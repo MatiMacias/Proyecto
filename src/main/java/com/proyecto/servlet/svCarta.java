@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package com.proyecto.servlet;
 
 import com.proyecto.logica.Carta;
 import com.proyecto.logica.ControladoraLogica;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,8 +15,9 @@ import java.util.List;
 
 /**
  *
- * @author Matias
+ * @author Santi
  */
+
 @WebServlet(name = "svCarta", urlPatterns = {"/svCarta"})
 public class svCarta extends HttpServlet {
     
@@ -34,17 +32,13 @@ public class svCarta extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        List<Carta> listaCarta= new ArrayList<>();
+        List<Carta> listaCartas = new ArrayList<>();
         
-        
-        listaCarta = ctrl.listarCarta();
+        listaCartas = ctrl.listarCartas();
         
         HttpSession misesion = request.getSession();
-        misesion.setAttribute("listaCarta", listaCarta);
+        misesion.setAttribute("listaCarta", listaCartas);
         response.sendRedirect("mostrarCarta.jsp");
-        
-        
-        
     }
 
     @Override
@@ -53,22 +47,20 @@ public class svCarta extends HttpServlet {
         processRequest(request, response);
         
         String nombre = request.getParameter("nombre");
-        //String categoria = request.getParameter("categoria");
-        double precio = Double.parseDouble(request.getParameter("precio"));
         
-        Carta car = new Carta();
+        Carta carta = new Carta();
         
-        car.setNombreProducto(nombre);
-        //car.setCategoria(categoria);
-        car.setPrecioProducto(precio);
+        // Se pueden agregar más campos a la carta aquí si es necesario.
         
-        ctrl.crearCarta(car);
+        carta.setNombreProducto(nombre);
+
+        ctrl.crearCarta(carta);
         
+        response.sendRedirect("datosCarta.jsp");
     }
 
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

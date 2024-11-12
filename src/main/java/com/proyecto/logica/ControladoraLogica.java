@@ -41,22 +41,21 @@ public class ControladoraLogica {
         ctrl.crearCarta(carta);
     }
     
-    public Carta buscarCarta(int id){
-        return ctrl.buscarCarta(id);
+    public Carta buscarCarta(int idCarta){
+        return ctrl.buscarCarta(idCarta);
     }
     
     public void modificarCarta(Carta carta){
         ctrl.modificarCarta(carta);
     }
     
-    public void borrarCarta(int id){
-        ctrl.borrarCarta(id);
+    public void borrarCarta(int idCarta){
+        ctrl.borrarCarta(idCarta);
     }
     
-    public ArrayList<Carta> listarCarta(){
-        return ctrl.listarCarta();
+    public ArrayList<Carta> listarCartas(){
+        return ctrl.consultarCarta();
     }
-    
 
     //----- Pedido -----
     
