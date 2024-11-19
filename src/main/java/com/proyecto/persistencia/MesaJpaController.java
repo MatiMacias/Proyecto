@@ -27,8 +27,9 @@ public class MesaJpaController implements Serializable {
     public MesaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public MesaJpaController(){
-        emf=Persistence.createEntityManagerFactory("proyectoPU");
+    
+    public MesaJpaController() {
+        emf= Persistence.createEntityManagerFactory("proyectoPU");
     }
     
     private EntityManagerFactory emf = null;

@@ -9,7 +9,6 @@ import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import com.proyecto.logica.usuario;
 import com.proyecto.logica.Mesa;
 import com.proyecto.logica.Reserva;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
@@ -29,8 +28,8 @@ public class ReservaJpaController implements Serializable {
         this.emf = emf;
     }
     
-    public ReservaJpaController(){
-        emf=Persistence.createEntityManagerFactory("proyectoPU");
+    public ReservaJpaController() {
+        emf= Persistence.createEntityManagerFactory("proyectoPU");
     }
     
     private EntityManagerFactory emf = null;
@@ -47,22 +46,13 @@ public class ReservaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            usuario usuario = reserva.getUsuarioRes();
-            if (usuario != null) {
-                usuario = em.getReference(usuario.getClass(), usuario.getId());
-                reserva.setUsuarioRes(usuario);
-            }
-            ArrayList<Mesa> attachedMesas = new ArrayList<Mesa>();
+            List<Mesa> attachedMesas = new ArrayList<Mesa>();
             for (Mesa mesasMesaToAttach : reserva.getMesas()) {
                 mesasMesaToAttach = em.getReference(mesasMesaToAttach.getClass(), mesasMesaToAttach.getNumMesa());
                 attachedMesas.add(mesasMesaToAttach);
             }
             reserva.setMesas(attachedMesas);
             em.persist(reserva);
-            if (usuario != null) {
-                usuario.getReservas().add(reserva);
-                usuario = em.merge(usuario);
-            }
             for (Mesa mesasMesa : reserva.getMesas()) {
                 Reserva oldReservaOfMesasMesa = mesasMesa.getReserva();
                 mesasMesa.setReserva(reserva);
@@ -86,15 +76,9 @@ public class ReservaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Reserva persistentReserva = em.find(Reserva.class, reserva.getIdReserva());
-            usuario usuarioOld = persistentReserva.getUsuarioRes();
-            usuario usuarioNew = reserva.getUsuarioRes();
             List<Mesa> mesasOld = persistentReserva.getMesas();
             List<Mesa> mesasNew = reserva.getMesas();
-            if (usuarioNew != null) {
-                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getId());
-                reserva.setUsuarioRes(usuarioNew);
-            }
-            ArrayList<Mesa> attachedMesasNew = new ArrayList<Mesa>();
+            List<Mesa> attachedMesasNew = new ArrayList<Mesa>();
             for (Mesa mesasNewMesaToAttach : mesasNew) {
                 mesasNewMesaToAttach = em.getReference(mesasNewMesaToAttach.getClass(), mesasNewMesaToAttach.getNumMesa());
                 attachedMesasNew.add(mesasNewMesaToAttach);
@@ -102,14 +86,6 @@ public class ReservaJpaController implements Serializable {
             mesasNew = attachedMesasNew;
             reserva.setMesas(mesasNew);
             reserva = em.merge(reserva);
-            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
-                usuarioOld.getReservas().remove(reserva);
-                usuarioOld = em.merge(usuarioOld);
-            }
-            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
-                usuarioNew.getReservas().add(reserva);
-                usuarioNew = em.merge(usuarioNew);
-            }
             for (Mesa mesasOldMesa : mesasOld) {
                 if (!mesasNew.contains(mesasOldMesa)) {
                     mesasOldMesa.setReserva(null);
@@ -155,11 +131,6 @@ public class ReservaJpaController implements Serializable {
                 reserva.getIdReserva();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The reserva with id " + id + " no longer exists.", enfe);
-            }
-            usuario usuario = reserva.getUsuarioRes();
-            if (usuario != null) {
-                usuario.getReservas().remove(reserva);
-                usuario = em.merge(usuario);
             }
             List<Mesa> mesas = reserva.getMesas();
             for (Mesa mesasMesa : mesas) {

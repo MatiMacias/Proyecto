@@ -16,29 +16,28 @@ public class Carta implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idProducto;
     
-    private String Categoria;
-    
     private String nombreProducto;
  
     private Double precioProducto;
     
     @ManyToOne
-    private Pedido pedido;
+    private Categoria categoriaProd;
     
-    @ManyToOne
-    private usuario usuarioProd;
+    
+    
+    
 
     public Carta() {
     }
 
-    public Carta(int idProducto, String Categoria, String nombreProducto, Double precioProducto, Pedido pedido, usuario usuarioProd) {
+    public Carta(int idProducto, String nombreProducto, Double precioProducto, Categoria categoriaProd) {
         this.idProducto = idProducto;
-        this.Categoria = Categoria;
         this.nombreProducto = nombreProducto;
         this.precioProducto = precioProducto;
-        this.pedido = pedido;
-        this.usuarioProd = usuarioProd;
+        this.categoriaProd = categoriaProd;
     }
+
+    
 
     public int getIdProducto() {
         return idProducto;
@@ -48,13 +47,15 @@ public class Carta implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public String getCategoria() {
-        return Categoria;
+    public Categoria getCategoria() {
+        return categoriaProd;
     }
 
-    public void setCategoria(String Categoria) {
-        this.Categoria = Categoria;
+    public void setCategoria(Categoria categoriaProd) {
+        this.categoriaProd = categoriaProd;
     }
+
+    
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -72,24 +73,12 @@ public class Carta implements Serializable {
         this.precioProducto = precioProducto;
     }
 
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
-
-    public usuario getUsuarioProd() {
-        return usuarioProd;
-    }
-
-    public void setUsuarioProd(usuario usuarioProd) {
-        this.usuarioProd = usuarioProd;
-    }
+    
 
     @Override
     public String toString() {
-        return "Carta{" + "idProducto=" + idProducto + ", Categoria=" + Categoria + ", nombreProducto=" + nombreProducto + ", precioProducto=" + precioProducto + ", pedido=" + pedido + ", usuario=" + usuarioProd + '}';
+        return "Carta{" + "idProducto=" + idProducto + ", nombreProducto=" + nombreProducto + ", precioProducto=" + precioProducto + ", categoria=" + categoriaProd + '}';
     }
+
+    
 }

@@ -31,23 +31,17 @@ public class usuario implements Serializable {
     private String contrasena;
     private String tipo;
     
-    @OneToMany (mappedBy = "usuarioRes")
-    private ArrayList<Reserva> reservas;
     
-    @OneToMany (mappedBy = "usuarioProd")
-    private ArrayList<Carta> carta;
 
     public usuario() {
     }
 
-    public usuario(int id, String nombre, String correo, String contrasena, String tipo, ArrayList<Reserva> reservas, ArrayList<Carta> carta) {
+    public usuario(int id, String nombre, String correo, String contrasena, String tipo, ArrayList<Reserva> reservas) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasena = contrasena;
         this.tipo = tipo;
-        this.reservas = reservas;
-        this.carta = carta;
     }
 
     
@@ -92,25 +86,9 @@ public class usuario implements Serializable {
         this.tipo = tipo;
     }
 
-    public ArrayList<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(ArrayList<Reserva> reservas) {
-        this.reservas = reservas;
-    }
-
-    public ArrayList<Carta> getCarta() {
-        return carta;
-    }
-
-    public void setCarta(ArrayList<Carta> carta) {
-        this.carta = carta;
-    }
-
     @Override
     public String toString() {
-        return "usuario{" + "id=" + id + ", nombre=" + nombre + ", correo=" + correo + ", contrasena=" + contrasena + ", tipo=" + tipo + ", reservas=" + reservas + ", carta=" + carta + '}';
+        return "usuario{" + "id=" + id + ", nombre=" + nombre + ", correo=" + correo + ", contrasena=" + contrasena + ", tipo=" + tipo + '}';
     }
 
     
