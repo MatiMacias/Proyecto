@@ -3,6 +3,7 @@
   <persistence-unit name="proyectoPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.proyecto.logica.Carta</class>
+    <class>com.proyecto.logica.Categoria</class>
     <class>com.proyecto.logica.Mesa</class>
     <class>com.proyecto.logica.Pedido</class>
     <class>com.proyecto.logica.Reserva</class>

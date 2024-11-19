@@ -26,8 +26,8 @@ public class usuarioJpaController implements Serializable {
         this.emf = emf;
     }
     
-    public usuarioJpaController(){
-        emf=Persistence.createEntityManagerFactory("proyectoPU");
+    public usuarioJpaController() {
+        emf= Persistence.createEntityManagerFactory("proyectoPU");
     }
     
     private EntityManagerFactory emf = null;

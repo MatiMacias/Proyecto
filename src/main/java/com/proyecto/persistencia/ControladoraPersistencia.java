@@ -2,10 +2,16 @@ package com.proyecto.persistencia;
 
 import com.proyecto.logica.usuario;
 import com.proyecto.logica.Carta;
+import com.proyecto.logica.Categoria;
 import com.proyecto.logica.Mesa;
 import com.proyecto.logica.Pedido;
 import com.proyecto.logica.Reserva;
+import com.proyecto.persistencia.CartaJpaController;
+import com.proyecto.persistencia.MesaJpaController;
+import com.proyecto.persistencia.PedidoJpaController;
+import com.proyecto.persistencia.ReservaJpaController;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
+import com.proyecto.persistencia.usuarioJpaController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,6 +60,48 @@ public class ControladoraPersistencia {
         List<Carta> listaC = cartaJpaController.findCartaEntities();
         return new ArrayList<>(listaC);
     }
+    
+    // ------- Categoria ------
+    
+    CategoriaJpaController cate = new CategoriaJpaController();
+    
+    public void crearCategoria(Categoria categoria) {
+        cate.create(categoria);
+    }
+
+    public Categoria buscarCategoria(int idCategoria) {
+       return cate.findCategoria(idCategoria);
+    }
+    
+    public Categoria buscarCategoriaNombre(String nombre){
+        return cate.findCategoriaName(nombre);
+    }
+
+    public void modificarCategoria(Categoria categoria) {
+       try {
+           cate.edit(categoria);
+       } catch (Exception ex) {
+           Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+       }
+    }
+
+    public void borrarCategoria(int idCategoria) {
+       try {
+           cate.destroy(idCategoria);
+       } catch (NonexistentEntityException ex) {
+           Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+       }
+    }
+
+    public ArrayList<Categoria> consultarCategoria() {
+        List<Categoria> listac = cate.findCategoriaEntities();
+        ArrayList<Categoria> lista = new ArrayList<Categoria> (listac);
+        return lista;
+    }
+    
+
+    
+    
 
 
     //----- Pedidos -----
@@ -206,5 +254,5 @@ public class ControladoraPersistencia {
     public List<Reserva> traerReservas() {
         return resJpa.findReservaEntities();
     }
-    
+
 }

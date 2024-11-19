@@ -14,9 +14,8 @@ import java.util.List;
  * @author Matias
  */
 public class ControladoraLogica {
-    
+ 
     ControladoraPersistencia ctrl = new ControladoraPersistencia();
-    
     //----- Login -----
     
     public boolean validarIngreso(String usuario, String contrasena){
@@ -56,6 +55,33 @@ public class ControladoraLogica {
     public ArrayList<Carta> listarCartas(){
         return ctrl.consultarCarta();
     }
+    
+    //----- Categoria ------
+    
+    public void crearCategoria(Categoria categoria){
+        ctrl.crearCategoria(categoria);
+    }
+    
+    public Categoria buscarCategoria(int idCategoria){
+        return ctrl.buscarCategoria(idCategoria);
+    }
+    
+    public Categoria buscarCategoriaNombre(String nombre){
+        return ctrl.buscarCategoriaNombre(nombre);
+    }
+    
+    public void modificarCategoria(Categoria categoria){
+        ctrl.modificarCategoria(categoria);
+    }
+    
+    public void borrarCategoria(int idCategoria){
+        ctrl.borrarCategoria(idCategoria);
+    }
+    
+    public ArrayList<Categoria> listarCategoria(){
+        return ctrl.consultarCategoria();
+    }
+    
 
     //----- Pedido -----
     

@@ -4,7 +4,7 @@
  */
 package com.proyecto.persistencia;
 
-import com.proyecto.logica.Carta;
+import com.proyecto.logica.Categoria;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -20,13 +21,13 @@ import jakarta.persistence.criteria.Root;
  *
  * @author Matias
  */
-public class CartaJpaController implements Serializable {
+public class CategoriaJpaController implements Serializable {
 
-    public CartaJpaController(EntityManagerFactory emf) {
+    public CategoriaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-
-    public CartaJpaController() {
+    
+    public CategoriaJpaController() {
         emf= Persistence.createEntityManagerFactory("proyectoPU");
     }
     
@@ -36,12 +37,12 @@ public class CartaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Carta carta) {
+    public void create(Categoria categoria) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(carta);
+            em.persist(categoria);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -50,19 +51,19 @@ public class CartaJpaController implements Serializable {
         }
     }
 
-    public void edit(Carta carta) throws NonexistentEntityException, Exception {
+    public void edit(Categoria categoria) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            carta = em.merge(carta);
+            categoria = em.merge(categoria);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                int id = carta.getIdProducto();
-                if (findCarta(id) == null) {
-                    throw new NonexistentEntityException("The carta with id " + id + " no longer exists.");
+                int id = categoria.getId();
+                if (findCategoria(id) == null) {
+                    throw new NonexistentEntityException("The categoria with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -78,14 +79,14 @@ public class CartaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Carta carta;
+            Categoria categoria;
             try {
-                carta = em.getReference(Carta.class, id);
-                carta.getIdProducto();
+                categoria = em.getReference(Categoria.class, id);
+                categoria.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The carta with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The categoria with id " + id + " no longer exists.", enfe);
             }
-            em.remove(carta);
+            em.remove(categoria);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -94,19 +95,19 @@ public class CartaJpaController implements Serializable {
         }
     }
 
-    public List<Carta> findCartaEntities() {
-        return findCartaEntities(true, -1, -1);
+    public List<Categoria> findCategoriaEntities() {
+        return findCategoriaEntities(true, -1, -1);
     }
 
-    public List<Carta> findCartaEntities(int maxResults, int firstResult) {
-        return findCartaEntities(false, maxResults, firstResult);
+    public List<Categoria> findCategoriaEntities(int maxResults, int firstResult) {
+        return findCategoriaEntities(false, maxResults, firstResult);
     }
 
-    private List<Carta> findCartaEntities(boolean all, int maxResults, int firstResult) {
+    private List<Categoria> findCategoriaEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Carta.class));
+            cq.select(cq.from(Categoria.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -118,20 +119,38 @@ public class CartaJpaController implements Serializable {
         }
     }
 
-    public Carta findCarta(int id) {
+    public Categoria findCategoria(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Carta.class, id);
+            return em.find(Categoria.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Categoria findCategoriaName(String name){
+         EntityManager em = getEntityManager();
+        try {
+            // Crear una consulta JPQL para buscar la categoría por nombre
+            String query = "SELECT c FROM Categoria c WHERE c.Nombre = :Nombre";
+            Categoria categoria = (Categoria) em.createQuery(query)
+                                                 .setParameter("Nombre", name)
+                                                 .getSingleResult();  // Devuelve una sola categoría
+
+            return categoria;
+        } catch (NoResultException e) {
+            // Si no se encuentra la categoría, se puede manejar aquí
+            return null;
         } finally {
             em.close();
         }
     }
 
-    public int getCartaCount() {
+    public int getCategoriaCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Carta> rt = cq.from(Carta.class);
+            Root<Categoria> rt = cq.from(Categoria.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

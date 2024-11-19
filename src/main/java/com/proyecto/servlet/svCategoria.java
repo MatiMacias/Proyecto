@@ -1,5 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package com.proyecto.servlet;
 
+import com.google.gson.Gson;
 import com.proyecto.logica.Carta;
 import com.proyecto.logica.Categoria;
 import com.proyecto.logica.ControladoraLogica;
@@ -10,17 +15,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Santi
- */
 
-@WebServlet(name = "svCarta", urlPatterns = {"/svCarta"})
-public class svCarta extends HttpServlet {
+@WebServlet(name = "svCategoria", urlPatterns = {"/svCategoria"})
+public class svCategoria extends HttpServlet {
     
     ControladoraLogica ctrl = new ControladoraLogica();
 
@@ -32,40 +32,47 @@ public class svCarta extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         
-        List<Carta> listaCartas = new ArrayList<>();
+        List<Categoria> categorias = ctrl.listarCategoria();
         
-        listaCartas = ctrl.listarCartas();
+        List<String> nombresCategorias = new ArrayList<>();
+        for(Categoria categoria : categorias){
+            nombresCategorias.add(categoria.getNombre());
+        }
         
-        HttpSession misesion = request.getSession();
-        misesion.setAttribute("listaCarta", listaCartas);
-        response.sendRedirect("mostrarCarta.jsp");
+        String json = new Gson().toJson(nombresCategorias);
+        
+        response.getWriter().write(json);
+        
+        
+        
     }
 
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
         
-        String categoria = request.getParameter("categoriasSelect");
-        String nombre = request.getParameter("nombreProducto");
-        Double precio = Double.parseDouble(request.getParameter("precioProducto"));
+        String nombre = request.getParameter("nuevaCategoria");
         
-        Carta carta = new Carta();
         
-        Categoria cate = ctrl.buscarCategoriaNombre(categoria);
+        Categoria cate = new Categoria();
         
-        carta.setNombreProducto(nombre);
-        carta.setPrecioProducto(precio);
-        carta.setCategoria(cate);
-
-        ctrl.crearCarta(carta);
+        cate.setNombre(nombre);
+        
+        ctrl.crearCategoria(cate);
         
         response.sendRedirect("carta.jsp");
+        
     }
+    
 
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    }// </editor-fold>
+
 }

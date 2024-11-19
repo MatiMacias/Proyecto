@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.OneToMany;
@@ -29,7 +30,8 @@ public class Pedido implements Serializable{
     @Temporal(TemporalType.TIME)
     private Date horaPedido;
     
-    @OneToMany (mappedBy="Pedido")
+    @OneToMany
+    @JoinColumn(name = "pedido_id")
     private ArrayList<Carta> listaProductos;
     
     

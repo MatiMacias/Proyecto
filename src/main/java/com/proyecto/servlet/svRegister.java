@@ -47,16 +47,12 @@ public class svRegister extends HttpServlet {
         String contrasena = request.getParameter("contrasena");
         String email = request.getParameter("email");
         
-        ArrayList<Carta> productos = new ArrayList<Carta>();
-        ArrayList<Reserva> reservas =  new ArrayList<Reserva>();
         
         usuario user = new usuario();
         
         user.setNombre(usuario);
         user.setContrasena(contrasena);
         user.setCorreo(email);
-        user.setCarta(productos);
-        user.setReservas(reservas);
         
         
         ctrl.crearUsuario(user);
