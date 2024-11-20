@@ -25,28 +25,11 @@ public class svMesaMod extends HttpServlet {
     
     ControladoraLogica logica = new ControladoraLogica();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,29 +44,37 @@ public class svMesaMod extends HttpServlet {
         response.sendRedirect("MesaMod.jsp");
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String numMesa = request.getParameter("numMesa");
-        String estado = request.getParameter("estado");
-        //String reserva = request.getParameter("reserva");
         
-        Mesa mesa = new Mesa();
-        mesa.setNumMesa(Integer.parseInt(numMesa));
-        mesa.setEstado(estado);
-        //mesa.setReserva(reserva);
-        // Llamamos el metodo modificarEstudiante de la controladora logica (lo creamos si no existe)
-        logica.modificarMesa(mesa);
-        // Redireccionamos al index
-        response.sendRedirect("MesaCarga.jsp");
+        // Obtener los parámetros enviados desde el front-end
+        String mesaNum = request.getParameter("mesaNum");
+        String estado = request.getParameter("estado");
+
+        try {
+            // Buscar la mesa por su número
+            Mesa mesa = logica.buscarMesa(Integer.valueOf(mesaNum)); // Asegúrate de que esto se haga correctamente
+
+            if (mesa != null) {
+                // Cambiar el estado de la mesa
+                mesa.setEstado(estado);
+
+                // Modificar la mesa en la base de datos
+                logica.modificarMesa(mesa); 
+
+                // Responder al cliente con un mensaje de éxito
+                response.getWriter().write("Estado actualizado correctamente");
+            } else {
+                // Si no se encuentra la mesa, respondemos con error
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Mesa no encontrada");
+            }
+        } catch (Exception e) {
+            // Si ocurre un error, respondemos con error interno
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al actualizar el estado de la mesa");
+        }
     }
 
     /**
