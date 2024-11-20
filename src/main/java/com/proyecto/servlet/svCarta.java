@@ -1,5 +1,6 @@
 package com.proyecto.servlet;
 
+import com.google.gson.Gson;
 import com.proyecto.logica.Carta;
 import com.proyecto.logica.Categoria;
 import com.proyecto.logica.ControladoraLogica;
@@ -33,13 +34,20 @@ public class svCarta extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        List<Carta> listaCartas = new ArrayList<>();
-        
-        listaCartas = ctrl.listarCartas();
-        
-        HttpSession misesion = request.getSession();
-        misesion.setAttribute("listaCarta", listaCartas);
-        response.sendRedirect("mostrarCarta.jsp");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // Simulando datos de productos (deberías cargarlos desde la base de datos)
+        List<Carta> productos = ctrl.listarCartas();
+
+        // Convertir lista a JSON usando Gson
+        Gson gson = new Gson();
+        String json = gson.toJson(productos);
+
+        // Escribir la respuesta
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
     }
 
     @Override

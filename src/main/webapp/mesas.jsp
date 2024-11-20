@@ -41,5 +41,19 @@
             
         </table>
     </div>
+    
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function (){
+          $.ajax({
+              url:"svMesa",
+              type:"GET",
+              dataType:"json",
+              success: function (data) {
+                        
+                    }
+          });
+        });
+    </script>
 </body>
 </html>
