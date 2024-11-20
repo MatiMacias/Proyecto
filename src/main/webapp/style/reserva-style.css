@@ -95,6 +95,15 @@ section{
     clear: both;
 }
 
+.section-two {
+  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  background-color: lightgreen;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .datos{
     margin: 15px;
     font-weight: bold;
