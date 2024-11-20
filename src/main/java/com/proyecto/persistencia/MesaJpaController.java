@@ -5,18 +5,17 @@
 package com.proyecto.persistencia;
 
 import com.proyecto.logica.Mesa;
-import java.io.Serializable;
-import jakarta.persistence.Query;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import com.proyecto.logica.Reserva;
 import com.proyecto.persistencia.exceptions.NonexistentEntityException;
 import com.proyecto.persistencia.exceptions.PreexistingEntityException;
+import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 /**
  *
@@ -29,9 +28,8 @@ public class MesaJpaController implements Serializable {
     }
     
     public MesaJpaController() {
-        emf= Persistence.createEntityManagerFactory("proyectoPU");
-    }
-    
+        emf = Persistence.createEntityManagerFactory("proyectoPU");
+    }    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -43,16 +41,7 @@ public class MesaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Reserva reserva = mesa.getReserva();
-            if (reserva != null) {
-                reserva = em.getReference(reserva.getClass(), reserva.getIdReserva());
-                mesa.setReserva(reserva);
-            }
             em.persist(mesa);
-            if (reserva != null) {
-                reserva.getMesas().add(mesa);
-                reserva = em.merge(reserva);
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findMesa(mesa.getNumMesa()) != null) {
@@ -71,22 +60,7 @@ public class MesaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Mesa persistentMesa = em.find(Mesa.class, mesa.getNumMesa());
-            Reserva reservaOld = persistentMesa.getReserva();
-            Reserva reservaNew = mesa.getReserva();
-            if (reservaNew != null) {
-                reservaNew = em.getReference(reservaNew.getClass(), reservaNew.getIdReserva());
-                mesa.setReserva(reservaNew);
-            }
             mesa = em.merge(mesa);
-            if (reservaOld != null && !reservaOld.equals(reservaNew)) {
-                reservaOld.getMesas().remove(mesa);
-                reservaOld = em.merge(reservaOld);
-            }
-            if (reservaNew != null && !reservaNew.equals(reservaOld)) {
-                reservaNew.getMesas().add(mesa);
-                reservaNew = em.merge(reservaNew);
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -115,11 +89,6 @@ public class MesaJpaController implements Serializable {
                 mesa.getNumMesa();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The mesa with id " + id + " no longer exists.", enfe);
-            }
-            Reserva reserva = mesa.getReserva();
-            if (reserva != null) {
-                reserva.getMesas().remove(mesa);
-                reserva = em.merge(reserva);
             }
             em.remove(mesa);
             em.getTransaction().commit();

@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.List;
@@ -35,26 +36,22 @@ public class Reserva implements Serializable {
     private String apellido;
     private String telefono;
     
-    @ManyToOne
-    private usuario usuarioRes;
     
-    @OneToMany (mappedBy="reserva")
-    private List<Mesa> mesas;
+    @OneToOne
+    private Mesa mesas;
     
 
     
     public Reserva() {
     }
 
-    public Reserva(int idReserva, Calendar fecha, Date hora, String nombre, String apellido, String telefono, usuario usuarioRes, List<Mesa> mesas) {
+    public Reserva(int idReserva, Calendar fecha, Date hora, String nombre, String apellido, String telefono, List<Mesa> mesas) {
         this.idReserva = idReserva;
         this.fecha = fecha;
         this.hora = hora;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
-        this.usuarioRes = usuarioRes;
-        this.mesas = mesas;
     }
 
     public int getIdReserva() {
@@ -105,25 +102,19 @@ public class Reserva implements Serializable {
         this.telefono = telefono;
     }
 
-    public usuario getUsuarioRes() {
-        return usuarioRes;
-    }
-
-    public void setUsuarioRes(usuario usuarioRes) {
-        this.usuarioRes = usuarioRes;
-    }
-
-    public List<Mesa> getMesas() {
+    public Mesa getMesas() {
         return mesas;
     }
 
-    public void setMesas(List<Mesa> mesas) {
+    public void setMesas(Mesa mesas) {
         this.mesas = mesas;
     }
+    
+    
 
     @Override
     public String toString() {
-        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", usuarioRes=" + usuarioRes + ", mesas=" + mesas + '}';
+        return "Reserva{" + "idReserva=" + idReserva + ", fecha=" + fecha + ", hora=" + hora + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", usuarioRes=" + '}';
     }
 
   

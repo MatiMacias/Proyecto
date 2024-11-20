@@ -27,7 +27,7 @@ public class PedidoJpaController implements Serializable {
     }
     
     public PedidoJpaController() {
-        emf= Persistence.createEntityManagerFactory("proyectoPU");
+        emf = Persistence.createEntityManagerFactory("proyectoPU");
     }
     
     private EntityManagerFactory emf = null;

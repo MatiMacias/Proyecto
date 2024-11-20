@@ -27,7 +27,7 @@ public class CartaJpaController implements Serializable {
     }
 
     public CartaJpaController() {
-        emf= Persistence.createEntityManagerFactory("proyectoPU");
+        emf = Persistence.createEntityManagerFactory("proyectoPU");
     }
     
     private EntityManagerFactory emf = null;

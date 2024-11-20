@@ -21,7 +21,7 @@ public class Mesa implements Serializable {
     private int numMesa;
     @Basic
     private String estado;
-    @ManyToOne
+    @OneToOne
     private Reserva reserva;
     
     @OneToOne
