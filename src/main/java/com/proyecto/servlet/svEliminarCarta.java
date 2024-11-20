@@ -1,6 +1,7 @@
     
 package com.proyecto.servlet;
 
+import com.proyecto.logica.Carta;
 import com.proyecto.logica.ControladoraLogica;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -34,11 +35,30 @@ public class svEliminarCarta extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        int idBorrar = Integer.parseInt(request.getParameter("idCarta"));
+         String nombreProducto = request.getParameter("nombreProducto"); // Obtén el nombre del producto de la solicitud
+
+        if (nombreProducto != null && !nombreProducto.isEmpty()) {
+            // Busca el producto por su nombre
+            Carta prod = ctrl.buscarCartaNombre(nombreProducto);
+            
+            if (prod != null) {
+                int idCarta = prod.getIdProducto();
+                
+                // Elimina el producto de la base de datos
+                ctrl.borrarCarta(idCarta);
+                
+                // Responde con un mensaje de éxito
+                response.getWriter().write("Producto eliminado correctamente");
+            } else {
+                // Si no se encuentra el producto
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Producto no encontrado");
+            }
+        } else {
+            // Si no se proporciona un nombre de producto
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Nombre del producto no proporcionado");
+        }
         
-        ctrl.borrarCarta(idBorrar);
-      
-        response.sendRedirect("index.jsp");
+        
     }
 
     @Override

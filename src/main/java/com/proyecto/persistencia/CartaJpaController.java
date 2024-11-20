@@ -12,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -122,6 +123,24 @@ public class CartaJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(Carta.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+        public Carta findCartaName(String name){
+         EntityManager em = getEntityManager();
+        try {
+            // Crear una consulta JPQL para buscar la categoría por nombre
+            String query = "SELECT c FROM Carta c WHERE c.nombreProducto = :nombreProducto";
+            Carta carta = (Carta) em.createQuery(query)
+                                                 .setParameter("nombreProducto", name)
+                                                 .getSingleResult();  // Devuelve una sola categoría
+
+            return carta;
+        } catch (NoResultException e) {
+            // Si no se encuentra la categoría, se puede manejar aquí
+            return null;
         } finally {
             em.close();
         }
