@@ -57,7 +57,7 @@
             </div>
         </form>
     </section>
-    <section>
+    <section class="section-two">
         <div id="reservasTabulator"></div>
     </section>
     
