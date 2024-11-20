@@ -44,6 +44,10 @@ public class ControladoraLogica {
         return ctrl.buscarCarta(idCarta);
     }
     
+    public Carta buscarCartaNombre(String nombre){
+        return ctrl.buscarCartaNombre(nombre);
+    }
+    
     public void modificarCarta(Carta carta){
         ctrl.modificarCarta(carta);
     }

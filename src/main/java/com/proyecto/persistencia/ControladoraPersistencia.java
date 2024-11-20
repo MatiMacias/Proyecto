@@ -45,6 +45,10 @@ public class ControladoraPersistencia {
     public Carta buscarCarta(int idCarta) {
         return cartaJpaController.findCarta(idCarta);
     }
+    
+    public Carta buscarCartaNombre(String nombre){
+        return cartaJpaController.findCartaName(nombre);
+    }
 
     // Método para modificar una carta existente
     public void modificarCarta(Carta carta) {
