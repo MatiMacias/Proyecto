@@ -57,9 +57,108 @@
             </div>
         </form>
     </section>
+    <section>
+        <div id="reservasTabulator"></div>
+    </section>
     
+     <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script>
+        
+        const reservasTabulator = new Tabulator("#reservasTabulator",{
+            ajaxURL: "svReserva", 
+            ajaxConfig: "GET",
+            layout: "fitColumns",
+            placeholder:"no hay reservas",
+            columns:[
+                {title:"Nombre",field:"nombre"},
+                {title:"Apellido",field:"apellido"},
+                {title:"Telefono",field:"telefono"},
+                {title:"Nombre",field:"mesas.numMesa"},
+                {
+                    title:"Fecha",
+                    field:"fecha",
+                    formatter: function (cell, formatterParams, onRendered) {
+                const fechaOriginal = cell.getValue(); // Obtener la fecha original
+                return formatearFecha(fechaOriginal); // Formatear la fecha antes de mostrarla
+            }
+
+                },
+                {
+                    title:"Hora",
+                    field:"hora",
+                    formatter: function (cell) {
+                        const rawTime = cell.getValue(); // Obtener valor de hora
+                        if (rawTime) {
+                            const timeObj = new Date(rawTime); // Crear un objeto Date
+                            return timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Formato HH:mm
+                        } else {
+                            return "Hora no disponible"; // Manejo de casos nulos o inválidos
+                        }
+                    }
+                },
+                {
+                    title:"eliminar",
+                    formatter: "buttonCross",
+                    cellClick: function(e,cell){
+                    const reserva = cell.getRow().getData(); // Obtén los datos de la fila
+                    eliminarReserva(reserva);;
+                }
+                }
+            ]
+        });
+        
+        
+        function formatearFecha(fecha) {
+    // Si la fecha está vacía o es un valor no válido, retornar "Fecha inválida"
+    if (!fecha || typeof fecha !== 'object' || !fecha.year) {
+        console.error("Fecha inválida:", fecha);
+        return "Fecha inválida";
+    }
+
+    // Crear el objeto Date usando los datos de la fecha
+    const fechaObjeto = new Date(fecha.year, fecha.month, fecha.dayOfMonth); // Usar directamente el mes tal cual es.
+
+    // Comprobar si la fecha es válida
+    if (isNaN(fechaObjeto.getTime())) {
+        console.error("Fecha inválida:", fecha);
+        return "Fecha inválida";
+    }
+
+    // Usar toLocaleDateString para formatear la fecha en formato dd/mm/yyyy
+    const fechaFormateada = fechaObjeto.toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    });
+
+    return fechaFormateada;
+}
+        
+        
+        function eliminarReserva(reserva){
+                    $.ajax({
+               url: "svReservaElim", // URL del servlet
+               type: "POST", // Método POST
+               data: {
+                   idReserva: reserva.idReserva // Usa el ID de la reserva
+               },
+               success: function () {
+                   alert("Reserva eliminada correctamente");
+                   reservasTabulator.replaceData(); // Recargar el Tabulator
+               },
+               error: function (xhr, status, error) {
+                   console.error("Error al eliminar la reserva:", error);
+                   alert("No se pudo eliminar la reserva. Inténtalo de nuevo.");
+               }
+           });
+        }
+        
+        
+        
+        
+        
             $(document).ready(function() {
     $.ajax({
         url: 'selectMesa', // URL del servlet

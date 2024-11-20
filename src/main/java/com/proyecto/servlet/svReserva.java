@@ -4,6 +4,7 @@
  */
 package com.proyecto.servlet;
 
+import com.google.gson.Gson;
 import com.proyecto.logica.ControladoraLogica;
 import com.proyecto.logica.Mesa;
 import java.io.IOException;
@@ -42,16 +43,20 @@ public class svReserva extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Reserva> listaReservas = new ArrayList<>();
-        listaReservas = logica.traerReservas();
-        
-        HttpSession misesion = request.getSession();
-        misesion.setAttribute("listaReservas", listaReservas);
-        
-        response.sendRedirect("mostrarReserva.jsp");
-        
-        List<Mesa> mesas = logica.listarMesas();
-        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // Simulando datos de productos (deberías cargarlos desde la base de datos)
+        List<Reserva> reservas = logica.listarReservas();
+
+        // Convertir lista a JSON usando Gson
+        Gson gson = new Gson();
+        String json = gson.toJson(reservas);
+
+        // Escribir la respuesta
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
         
         
     }
@@ -110,7 +115,7 @@ public class svReserva extends HttpServlet {
                 
         
         logica.crearReserva(res);
-        response.sendRedirect("dashboard.jsp");
+        response.sendRedirect("reserva.jsp");
     }
 
     @Override
