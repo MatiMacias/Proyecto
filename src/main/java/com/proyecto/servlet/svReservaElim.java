@@ -5,6 +5,8 @@
 package com.proyecto.servlet;
 
 import com.proyecto.logica.ControladoraLogica;
+import com.proyecto.logica.Mesa;
+import com.proyecto.logica.Reserva;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -38,9 +40,25 @@ public class svReservaElim extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            
+        try {
         int idReservaBorrar = Integer.parseInt(request.getParameter("idReserva"));
-        logica.borrarMesa(idReservaBorrar);
-        response.sendRedirect("ReservaCarga.jsp");
+        Reserva res = logica.buscarReserva(idReservaBorrar);
+        int numMesa = res.getMesas().getNumMesa();
+        logica.borrarReserva(idReservaBorrar); // Método para eliminar la reserva en la lógica
+        response.getWriter().write("Reserva eliminada correctamente");
+        Mesa mesa = logica.buscarMesa(numMesa);
+        mesa.setEstado("disponible");
+        logica.modificarMesa(mesa);
+    } catch (NumberFormatException e) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de reserva inválido");
+        e.printStackTrace();
+    } catch (Exception e) {
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al eliminar la reserva");
+        e.printStackTrace();
+    }    
+            
+        
     }
 
     @Override
