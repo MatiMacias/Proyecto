@@ -5,6 +5,7 @@
 package com.proyecto.servlet;
 
 import com.proyecto.logica.ControladoraLogica;
+import com.proyecto.logica.Mesa;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
 import com.proyecto.logica.Reserva;
+import com.proyecto.logica.usuario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -29,15 +33,6 @@ public class svReserva extends HttpServlet {
     
     ControladoraLogica logica = new ControladoraLogica();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
@@ -54,6 +49,11 @@ public class svReserva extends HttpServlet {
         misesion.setAttribute("listaReservas", listaReservas);
         
         response.sendRedirect("mostrarReserva.jsp");
+        
+        List<Mesa> mesas = logica.listarMesas();
+        
+        
+        
     }
 
     @Override
@@ -65,19 +65,50 @@ public class svReserva extends HttpServlet {
         String fecha = request.getParameter("fecRes");
         String hora = request.getParameter("horaRes");
         int comensales = Integer.parseInt(request.getParameter("comen"));
-        String mesas = request.getParameter("mesa");
         
-        Date fechadate = Date.from(Instant.parse(fecha));
+        String mesas = request.getParameter("mesa");
+        Mesa mesa = logica.buscarMesa(Integer.valueOf(mesas));
+        
+       
+        
+                // Parsear la fecha
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechadate = null;
+        try {
+            fechadate = dateFormatter.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Formato de fecha inválido");
+            return;
+        }
+
+        // Convertir a Calendar
         Calendar cal = Calendar.getInstance();
         cal.setTime(fechadate);
+
+        // Parsear la hora
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+        Date horaDate = null;
+        try {
+            horaDate = timeFormatter.parse(hora);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Formato de hora inválido");
+            return;
+        }
+        
         
         Reserva res = new Reserva();
+        res.setNombre(nombre);
+        res.setApellido(apellido);
+        res.setTelefono(telefono);
         res.setFecha(cal);
-        res.setHora(Date.from(Instant.parse(hora)));
-        //res.setMesas(Integer.parseInt(mesas));
+        res.setHora(horaDate);
+        res.setMesas(mesa);
+        
         
         logica.crearReserva(res);
-        response.sendRedirect("reserva.jsp");
+        response.sendRedirect("dashboard.jsp");
     }
 
     @Override
