@@ -7,10 +7,8 @@
     <title>Restaurante X </title>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style/dashboard-style.css">
-    <!-- Tabulator para gestionar datos en tablas-->
-    
-
 </head>
+
 <body>
   <header>
     <nav id="accion">
@@ -34,36 +32,34 @@
       </div>
     </nav>
   </header>
-  <section class="table-section">
-      <div class="section-container">
-        
-        <section id="third-section">
-          <div id="button-grid">
-              <!-- Botones para cambiar entre listas/tickets -->
-              <button class="grid-button" data-list-id="1">Lista 1</button>
-              <button class="grid-button" data-list-id="2">Lista 2</button>
-              <button class="grid-button" data-list-id="3">Lista 3</button>
-          </div>
-      </section>
-      </div>
-
-      <Section>
-        <div id="tablaProductos"></div>
-      </section>
-
-      <section>
-        <h3>TICKET</h3>
-        <div id="ticket-section"></div>
-        <button>Imprimir</button>
-        <h3>Total: <span id="total-sum">$0</span></h3>
-      </section>
-
+   <section id="mesas-section">
+        <h2>Mesas</h2>
+        <div id="mesas-container">
+            <!-- Aquí se generarán los botones de mesas -->
+        </div>
     </section>
-    
+
+    <section id="productos-section">
+        <h2>Productos</h2>
+        <div id="productos-tabulator"></div>
+    </section>
+
+    <section id="ticket-section">
+        <h2>Ticket</h2>
+        <div id="ticket-info">
+            <p><strong>Mesa:</strong> <span id="mesa-seleccionada">Ninguna</span></p>
+            <div id="ticket-tabulator"></div>
+            <p><strong>Total:</strong> $<span id="total-ticket">0.00</span></p>
+        </div>
+    </section>
+
 
      <!-- Tabulator para gestionar datos en tablas-->
     <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    
+    <script src="js/dash.js"></script>
+    
 </body>
 </html>

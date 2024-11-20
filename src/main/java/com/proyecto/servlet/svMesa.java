@@ -4,6 +4,7 @@
  */
 package com.proyecto.servlet;
 
+import com.google.gson.Gson;
 import com.proyecto.logica.ControladoraLogica;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,13 +34,18 @@ public class svMesa extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Mesa> listaMesas = new ArrayList<>();
-        listaMesas = logica.traerMesas();
         
-        HttpSession misesion = request.getSession();
-        misesion.setAttribute("listaMesas", listaMesas);
         
-        response.sendRedirect("index.jsp");
+        List<Mesa> mesas = logica.listarMesas();
+        
+        Gson gson = new Gson();
+        String json = gson.toJson(mesas);
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+        
+        
     }
 
     @Override
