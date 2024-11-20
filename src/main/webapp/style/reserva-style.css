@@ -96,6 +96,11 @@ section{
 }
 
 .section-two {
+  background-color: rgb(255, 255, 255, .4);
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  color: rgb(70, 69, 69);
   height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
   background-color: lightgreen;
   display: flex;
