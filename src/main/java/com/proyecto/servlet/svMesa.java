@@ -51,17 +51,15 @@ public class svMesa extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nMesa = request.getParameter("numMesa");
-        String estado = request.getParameter("estado");
-        //String reserva = request.getParameter("reserva");
+        
+        int numeroMesa = Integer.parseInt(request.getParameter("numeroMesa"));
         
         Mesa mesa = new Mesa();
-        mesa.setNumMesa(Integer.parseInt(nMesa));
-        mesa.setEstado(estado);
-        //mesa.setReserva());
+        mesa.setNumMesa(numeroMesa);
+        mesa.setEstado("disponible");
         
         logica.crearMesa(mesa);
-        response.sendRedirect("MesaCarga.jsp");
+        response.sendRedirect("mesas.jsp");
     }
 
     @Override

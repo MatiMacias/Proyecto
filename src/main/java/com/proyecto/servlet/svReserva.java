@@ -69,7 +69,8 @@ public class svReserva extends HttpServlet {
         String mesas = request.getParameter("mesa");
         Mesa mesa = logica.buscarMesa(Integer.valueOf(mesas));
         
-       
+        mesa.setEstado("reservada");
+        logica.modificarMesa(mesa);
         
                 // Parsear la fecha
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -106,6 +107,7 @@ public class svReserva extends HttpServlet {
         res.setHora(horaDate);
         res.setMesas(mesa);
         
+                
         
         logica.crearReserva(res);
         response.sendRedirect("dashboard.jsp");
